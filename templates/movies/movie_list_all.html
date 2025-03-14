@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h1>여기는 영화 목록 보기 페이지</h1>
+<table>
+    <thead>
+    <tr>
+        <th>영화 코드</th>
+        <th>영화 제목</th>
+        <th>제작 년도</th>
+        <th>개봉일</th>
+        <th>장르</th>
+        <th>국가</th>
+    </tr>
+    </thead>
+    <tbody>
+    {%for movie in movie_list %}
+    <tr>
+
+        <td>{{movie.movieCd}}</td>
+        <td>{{movie.movieNm}}</td>
+        <td>{{movie.prdtYear}}</td>
+        <td>{{movie.openDt|default:"-"}}</td>
+        <td>{{movie.repGenreNm}}</td>
+        <td>{{movie.repNationNm}}</td>
+    </tr>
+    {% empty %}
+    <tr>
+        <td colspan="6">등록된 영화가 없습니다.</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+    </table>
+</body>
+</html>
+
