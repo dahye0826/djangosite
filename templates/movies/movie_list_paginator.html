@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="mb-3">영화 목록</h2>
+
+    <!-- 검색 폼 -->
+    <form method="GET" action="" class="form-inline mb-3" onsubmit="return validateSearch()">
+        <select id="search_type" name="search_type" class="form-control mr-2">
+            <option value="-" {% if request.GET.search_type == "-" or request.GET.search_type is none %} selected{% endif %}>검색 항목을 선택해 주세요.</option>
+            <option value="typeNm" {% if request.GET.search_type == "typeNm" %} selected{% endif %}>영화 유형</option>
+            <option value="repNationNm" {% if request.GET.search_type == "repNationNm" %} selected{% endif %}>대표 제작 국가</option>
+            <option value="repGenreNm" {% if request.GET.search_type == "repGenreNm" %} selected{% endif %}>대표 장르</option>
+        </select>
+
+        <input id="search_value" type="text" name="search_value" class="form-control mr-2" placeholder="검색어 입력"
+               value="{{ request.GET.search_value }}">
+        <button type="submit" class="btn btn-primary">검색</button>
+        &nbsp;&nbsp;
+        <a href="{% url 'movies:movie_list_paginator' %}" class="btn btn-secondary">
+            전체 검색
+        </a>
+    </form>
+
+    <script>
+        function validateSearch() {
+            var searchType = document.getElementById("search_type").value;
+            var searchValue = document.getElementById("search_value").value.trim();
+
+            if (searchType === "-") {
+                alert("검색 항목을 선택해 주세요.");
+                return false; // 폼 제출 막기
+            }
+
+            if (searchValue === "") {
+                alert("검색어를 입력해 주세요.");
+                document.getElementById("search_value").focus();
+                return false;
+            }
+
+            return true; // 정상적으로 제출
+        }
+    </script>
+
+    <!-- 영화 목록 테이블 -->
+    <table class="table table-bordered table-striped">
+        <thead class="thead-light">
+        <tr>
+            <th>영화코드</th>
+            <th>영화명</th>
+            <th>개봉일</th>
+            <th>영화유형</th>
+            <th>대표 제작국가</th>
+            <th>대표 장르</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for movie in movies %}
+        <tr>
+            <td>{{ movie.movieCd }}</td>
+            <td>{{ movie.movieNm }}</td>
+            <td>{{ movie.openDt }}</td>
+            <td>{{ movie.typeNm }}</td>
+            <td>{{ movie.repNationNm }}</td>
+            <td>{{ movie.repGenreNm }}</td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="6" class="text-center">검색된 영화가 없습니다.</td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- 페이징 네비게이션 -->
+    <nav>
+        <ul class="pagination justify-content-center">
+            {% if movies.has_previous %}
+            <li class="page-item">
+                <a class="page-link"
+                   href="?page=1&search_type={{ request.GET.search_type }}&search_value={{ request.GET.search_value }}">처음</a>
+            </li>
+            <li class="page-item">
+                <a class="page-link"
+                   href="?page={{ movies.previous_page_number }}&search_type={{ request.GET.search_type }}&search_value={{ request.GET.search_value }}">이전</a>
+            </li>
+            {% endif %}
+
+            <li class="page-item disabled">
+                <span class="page-link">페이지 {{ movies.number }} / {{ movies.paginator.num_pages }}</span>
+            </li>
+
+            {% if movies.has_next %}
+            <li class="page-item">
+                <a class="page-link"
+                   href="?page={{ movies.next_page_number }}&search_type={{ request.GET.search_type }}&search_value={{ request.GET.search_value }}">다음</a>
+            </li>
+            <li class="page-item">
+                <a class="page-link"
+                   href="?page={{ movies.paginator.num_pages }}&search_type={{ request.GET.search_type }}&search_value={{ request.GET.search_value }}">마지막</a>
+            </li>
+            {% endif %}
+        </ul>
+    </nav>
+</div>
+{% endblock %}

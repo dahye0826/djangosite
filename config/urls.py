@@ -15,12 +15,14 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-
+from config.views import home
 from movies import views
 
 #파일이름: config/urls.py
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('',home, name='home'),
     # path('movies/', views.index), # movies 앱의 index 함수 호출
     path('movies/', include('movies.urls')),  # movies 앱의 urls 파일 포함시키기
+    path('coffees/', include('coffees.urls')),
 ]

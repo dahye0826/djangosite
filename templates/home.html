@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<!--: 다음값은 path 경로의 name 값을 작성하면 된다.-->
+  <a href="{% url 'movies:movie_list_all'%}">전체 영화 목록</a><br/><br/>
+  <a href="{% url 'movies:movie_list_paginator'%}">페이징처리</a><br/><br/>
+  <a href="{% url 'movies:genre/chart01'%}">영화 장르별 집계</a><br/><br/>
+
+  <a href="{% url 'coffees:coffee_chart_01'%}">브랜드 별 커피숍 파이</a><br/><br/>
+  <a href="{% url 'coffees:coffee_chart_03'%}">브랜드별 커피숍 위치 분포</a><br/><br/>
+</body>
+</html>

@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 
 from pathlib import Path
 
+from django.conf.global_settings import STATICFILES_DIRS
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -38,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'movies.apps.MoviesConfig', #apps.py 파일 참고
+    'coffees.apps.CoffeesConfig'
 ]
 
 MIDDLEWARE = [
@@ -53,6 +56,7 @@ MIDDLEWARE = [
 ROOT_URLCONF = 'config.urls'
 
 #templates 폴더는 개발자가 직접 생성한 폴더
+#BASE_DIR은 프로젝트 디렉토리의 최상위 경로를 나타내는 변수
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -122,3 +126,11 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
+
+
+#정적 파일 관련 코드 추가
+STATICFILES_DIRS =[
+   #static 파일을 가르키고있음
+    BASE_DIR / 'static',
+]
+

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>영화 유형별 통계</title>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        h1{width: 60%; margin: 0 auto;margin-top:30px;}
+        #myChart {
+            width: 60%;  /* 부모 요소의 60% 너비 */
+            height: 400px;  /* 고정된 높이 */
+            margin: 0 auto;  /* 가운데 정렬 */
+        }
+    </style>
+</head>
+<body>
+<div>
+<h1>영화 유형별 통계(Bar 그래프)</h1>
+    <canvas id="myChart"></canvas>
+    <script>
+                // Django에서 전달한 데이터를 JavaScript에서 사용할 수 있도록 변환
+        /* |safe 필터를 사용하면 Django가 데이터를 문자열로 변환할 때 HTML 이스케이프를 하지 않고 그대로 출력해 줍니다. */
+        const items = {{ items|safe }};
+        const counts = {{ counts|safe }};
+        console.log('items : ' + items);
+        console.log('counts : ' + counts);
+
+        /* canvas 요소를 가져와 2D 그래픽을 그릴 수 있도록 ctx 변수에 저장합니다. */
+        const ctx = document.getElementById('myChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: items,
+                datasets: [{
+                    label: '영화 수',
+                    data: counts,
+                    backgroundColor: 'rgba(54, 162, 235, 0.2)',  // 모든 바의 배경색
+                    borderColor: 'rgba(54, 162, 235, 1)',  // 모든 바의 경계색
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true, // 반응형( 그래프가 화면 크기에 맞춰 자동 크기 조정)
+                scales: {
+                    y: {
+                        beginAtZero: true, // Y축 값이 0부터 시작하도록 설정
+                        ticks: {
+                            stepSize: 10 // y축 눈금을 10 단위로 설정
+                        }
+                    }
+                }
+            }
+        });
+
+    </script>
+</div>
+</body>
+</html>
